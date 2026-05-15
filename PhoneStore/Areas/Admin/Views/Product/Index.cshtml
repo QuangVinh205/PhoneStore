@@ -1,0 +1,41 @@
+﻿@model IEnumerable<PhoneStore.Models.Product>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h1>Product</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Id)</th>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Price)</th>
+                <th>@Html.DisplayNameFor(model => model.PriceSale)</th>
+                <th>@Html.DisplayNameFor(model => model.Category!.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Photo)</th>
+            </tr>
+        </thead>
+        <tdody>
+            @foreach(var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PriceSale)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Category!.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Photo)</td>
+                    </tr>
+                }
+            </tdody>
+    </table>
+</body>
+</html>
