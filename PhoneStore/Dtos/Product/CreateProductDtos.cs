@@ -16,10 +16,8 @@ namespace PhoneStore.Dtos.Product
        
         public decimal? PriceSale { get; set; }
 
-        
         public IFormFile? Photo { get; set; }
 
-       
         public int? CategoryId { get; set; }
         
     }
