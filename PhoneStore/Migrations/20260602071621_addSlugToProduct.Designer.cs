@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhoneStore.DB;
 
@@ -11,9 +12,11 @@ using PhoneStore.DB;
 namespace PhoneStore.Migrations
 {
     [DbContext(typeof(PhoneStoreDbContext))]
-    partial class PhoneStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260602071621_addSlugToProduct")]
+    partial class addSlugToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

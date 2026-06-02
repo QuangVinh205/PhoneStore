@@ -10,6 +10,15 @@ builder.Services.AddDbContext<PhoneStoreDbContext>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//register session
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(o => { 
+      o.IdleTimeout = TimeSpan.FromMinutes(30);
+      o.Cookie.HttpOnly = true;
+      o.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +31,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

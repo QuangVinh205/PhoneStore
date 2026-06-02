@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PhoneStore.DB;
 using PhoneStore.Models;
 using System.Diagnostics;
 
@@ -6,8 +8,17 @@ namespace PhoneStore.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        readonly PhoneStoreDbContext _ctx;
+        public HomeController(PhoneStoreDbContext ctx)
         {
+            _ctx = ctx;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var featured = await _ctx.Products
+                .Where(o=>o.Featured!.Value).Take(10)
+                .ToListAsync();
+            ViewBag.Featured = featured;
             return View();
         }
 

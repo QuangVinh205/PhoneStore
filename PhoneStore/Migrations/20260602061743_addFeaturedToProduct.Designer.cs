@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhoneStore.DB;
 
@@ -11,9 +12,11 @@ using PhoneStore.DB;
 namespace PhoneStore.Migrations
 {
     [DbContext(typeof(PhoneStoreDbContext))]
-    partial class PhoneStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260602061743_addFeaturedToProduct")]
+    partial class addFeaturedToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,9 +134,6 @@ namespace PhoneStore.Migrations
 
                     b.Property<decimal?>("PriceSale")
                         .HasColumnType("money");
-
-                    b.Property<string>("Slug")
-                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
