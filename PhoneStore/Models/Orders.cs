@@ -8,7 +8,6 @@ namespace PhoneStore.Models
     {
         [Key]
         public int Id { get; set; }
-
         [Column(TypeName = "datetime")]
         public DateTime OrderDate { get; set; }
 
@@ -22,7 +21,13 @@ namespace PhoneStore.Models
 
         [ForeignKey("Users")]
         public int UsersId { get; set; }
-        public Users? Users { get; set; } 
+        public Users? Users { get; set; }
+
+        public IList<OrdersDetails>? Details { get; set; }
+
+        public string? CustomerName { get; set; }
+        public string? CustomerPhone { get; set; }
+        public string? CustomerAddress { get; set; }
 
 
     }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PhoneStore.DB;
+using PhoneStore.Service;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,9 @@ builder.Services.AddDbContext<PhoneStoreDbContext>
     (o => o.UseSqlServer(builder.Configuration.GetConnectionString("PhoneStoreConnection")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IPayPalService, PayPalService>();
 
 //register session
 builder.Services.AddDistributedMemoryCache();
