@@ -1,0 +1,7 @@
+@model PhoneStore.Models.Category
+<h1>Create Category</h1>
+<form asp-action="Create" asp-area="Admin" method="post">@Html.AntiForgeryToken()
+<div class="form-group"><label>Name</label><input asp-for="Name" class="form-control"/></div>
+<div class="form-group"><label>Description</label><textarea asp-for="Description" class="form-control"></textarea></div>
+<button class="btn btn-primary" type="submit">Save</button>
+</form>

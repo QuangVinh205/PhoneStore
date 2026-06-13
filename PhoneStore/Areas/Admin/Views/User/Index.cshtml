@@ -1,0 +1,11 @@
+@model IEnumerable<PhoneStore.Models.Users>
+<h1>Users</h1>
+<table class="table">
+<thead><tr><th>Id</th><th>Name</th><th>Email</th><th>Role</th><th></th></tr></thead>
+<tbody>
+@foreach(var u in Model){<tr><td>@u.Id</td><td>@u.Name</td><td>@u.Email</td><td>@u.Role?.Name</td><td>
+<a asp-action="Edit" asp-route-id="@u.Id" asp-area="Admin" class="btn btn-sm btn-warning">Edit</a>
+<a asp-action="Details" asp-route-id="@u.Id" asp-area="Admin" class="btn btn-sm btn-info">Details</a>
+<form asp-action="Delete" asp-route-id="@u.Id" asp-area="Admin" method="post" style="display:inline">@Html.AntiForgeryToken()<button class="btn btn-sm btn-danger">Delete</button></form>
+</td></tr>}
+</tbody></table>

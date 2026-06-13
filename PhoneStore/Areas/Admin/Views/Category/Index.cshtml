@@ -1,0 +1,12 @@
+@model IEnumerable<PhoneStore.Models.Category>
+<h1>Categories</h1>
+<p><a asp-action="Create" asp-area="Admin" class="btn btn-primary">Create</a></p>
+<table class="table">
+<thead><tr><th>Id</th><th>Name</th><th>Description</th><th></th></tr></thead>
+<tbody>
+@foreach(var c in Model){<tr><td>@c.Id</td><td>@c.Name</td><td>@c.Description</td><td>
+<a asp-action="Edit" asp-route-id="@c.Id" asp-area="Admin" class="btn btn-sm btn-warning">Edit</a>
+<a asp-action="Details" asp-route-id="@c.Id" asp-area="Admin" class="btn btn-sm btn-info">Details</a>
+<form asp-action="Delete" asp-route-id="@c.Id" asp-area="Admin" method="post" style="display:inline">@Html.AntiForgeryToken()<button class="btn btn-sm btn-danger">Delete</button></form>
+</td></tr>}
+</tbody></table>

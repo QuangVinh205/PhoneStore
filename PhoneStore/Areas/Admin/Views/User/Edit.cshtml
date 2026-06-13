@@ -1,0 +1,12 @@
+@model PhoneStore.Models.Users
+@{
+    ViewBag.Title = "Edit User";
+}
+<h1>Edit User</h1>
+<form asp-action="Edit" asp-area="Admin" method="post">@Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group"><label>Name</label><input asp-for="Name" class="form-control"/></div>
+    <div class="form-group"><label>Email</label><input asp-for="Email" class="form-control"/></div>
+    <div class="form-group"><label>Role</label><select asp-for="RoleId" class="form-control" asp-items="ViewBag.Roles"></select></div>
+    <button class="btn btn-primary" type="submit">Save</button>
+</form>
