@@ -12,7 +12,7 @@ using PhoneStore.DB;
 namespace PhoneStore.Migrations
 {
     [DbContext(typeof(PhoneStoreDbContext))]
-    [Migration("20260515131530_v1")]
+    [Migration("20260613124536_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -54,6 +54,15 @@ namespace PhoneStore.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CustomerAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime");
@@ -120,6 +129,9 @@ namespace PhoneStore.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("Featured")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(200)");
 
@@ -131,6 +143,9 @@ namespace PhoneStore.Migrations
 
                     b.Property<decimal?>("PriceSale")
                         .HasColumnType("money");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -208,7 +223,7 @@ namespace PhoneStore.Migrations
             modelBuilder.Entity("PhoneStore.Models.OrdersDetails", b =>
                 {
                     b.HasOne("PhoneStore.Models.Orders", "Orders")
-                        .WithMany()
+                        .WithMany("Details")
                         .HasForeignKey("OrdersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -240,6 +255,11 @@ namespace PhoneStore.Migrations
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("PhoneStore.Models.Orders", b =>
+                {
+                    b.Navigation("Details");
                 });
 #pragma warning restore 612, 618
         }

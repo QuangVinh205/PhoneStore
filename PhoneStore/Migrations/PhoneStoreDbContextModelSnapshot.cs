@@ -52,6 +52,15 @@ namespace PhoneStore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CustomerAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime");
 
@@ -211,7 +220,7 @@ namespace PhoneStore.Migrations
             modelBuilder.Entity("PhoneStore.Models.OrdersDetails", b =>
                 {
                     b.HasOne("PhoneStore.Models.Orders", "Orders")
-                        .WithMany()
+                        .WithMany("Details")
                         .HasForeignKey("OrdersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -243,6 +252,11 @@ namespace PhoneStore.Migrations
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("PhoneStore.Models.Orders", b =>
+                {
+                    b.Navigation("Details");
                 });
 #pragma warning restore 612, 618
         }

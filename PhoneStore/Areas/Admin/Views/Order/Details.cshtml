@@ -1,0 +1,199 @@
+@model PhoneStore.Models.Orders
+
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
+
+@functions {
+    public string GetStatusText(int? status)
+    {
+        return status switch
+        {
+            0 => "Chờ xử lý",
+            1 => "Đang xử lý",
+            2 => "Đang giao",
+            3 => "Đã hoàn thành",
+            4 => "Đã hủy",
+            _ => "Chờ xử lý"
+        };
+    }
+
+    public string GetStatusBadgeClass(int? status)
+    {
+        return status switch
+        {
+            0 => "badge badge-warning",
+            1 => "badge badge-info",
+            2 => "badge badge-primary",
+            3 => "badge badge-success",
+            4 => "badge badge-danger",
+            _ => "badge badge-warning"
+        };
+    }
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Chi tiết đơn hàng #@Model.Id</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Order">Đơn hàng</a></li>
+                    <li class="breadcrumb-item active">Chi tiết</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-check"></i> Thành công!</h5>
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Customer Info Card -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <h3 class="profile-username text-center">@Model.CustomerName</h3>
+                        <p class="text-muted text-center">Khách hàng mua sắm</p>
+
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Số điện thoại:</b> <a class="float-right text-dark">@Model.CustomerPhone</a>
+                            </li>
+                            <li class="list-group-item" style="border-bottom: 1px solid #dee2e6;">
+                                <b>Địa chỉ giao hàng:</b> 
+                                <p class="mt-2 text-justify text-secondary">@Model.CustomerAddress</p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Ngày đặt hàng:</b> <a class="float-right text-dark">@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Trạng thái hiện tại:</b> 
+                                <span class="float-right @GetStatusBadgeClass(Model.Status)">
+                                    @GetStatusText(Model.Status)
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+                <!-- Update Status Card -->
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Cập nhật trạng thái</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form asp-action="UpdateStatus" asp-controller="Order" asp-area="Admin" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="status">Chọn trạng thái</label>
+                                <select id="status" name="status" class="form-control">
+                                    <option value="0" selected="@(Model.Status == 0 ? "selected" : null)">Chờ xử lý</option>
+                                    <option value="1" selected="@(Model.Status == 1 ? "selected" : null)">Đang xử lý</option>
+                                    <option value="2" selected="@(Model.Status == 2 ? "selected" : null)">Đang giao</option>
+                                    <option value="3" selected="@(Model.Status == 3 ? "selected" : null)">Đã hoàn thành</option>
+                                    <option value="4" selected="@(Model.Status == 4 ? "selected" : null)">Đã hủy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-info btn-block">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Danh sách sản phẩm đã đặt</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Đơn giá</th>
+                                    <th>Số lượng</th>
+                                    <th class="text-right">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    decimal grandTotal = 0;
+                                }
+                                @if (Model.Details != null && Model.Details.Count > 0)
+                                {
+                                    foreach (var detail in Model.Details)
+                                    {
+                                        var subtotal = detail.Price * detail.Quantity;
+                                        grandTotal += subtotal;
+                                        <tr>
+                                            <td>
+                                                @if (detail.Product != null && !string.IsNullOrEmpty(detail.Product.Photo))
+                                                {
+                                                    <img src="/img/@detail.Product.Photo" style="width: 60px; height: auto; border-radius: 4px;" />
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">No Image</span>
+                                                }
+                                            </td>
+                                            <td>@(detail.Product?.Name ?? "Sản phẩm đã bị xóa")</td>
+                                            <td>@detail.Price.ToString("N0") đ</td>
+                                            <td>@detail.Quantity</td>
+                                            <td class="text-right">@subtotal.ToString("N0") đ</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">Đơn hàng không có sản phẩm nào.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="4" class="text-right">Tổng cộng:</th>
+                                    <th class="text-right text-danger" style="font-size: 1.2rem;">@grandTotal.ToString("N0") đ</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <a href="/Admin/Order" class="btn btn-secondary">Quay lại danh sách</a>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->

@@ -47,11 +47,13 @@ namespace PhoneStore.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "money", nullable: true),
                     PriceSale = table.Column<decimal>(type: "money", nullable: true),
                     Photo = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    Featured = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,7 +99,10 @@ namespace PhoneStore.Migrations
                     ShippingPhone = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     ShippingAddress = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true),
-                    UsersId = table.Column<int>(type: "int", nullable: false)
+                    UsersId = table.Column<int>(type: "int", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerAddress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
